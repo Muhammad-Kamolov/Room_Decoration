@@ -11,7 +11,7 @@ using Metal_Rolling;
 namespace Room_Decoration
 {
     internal class App : IExternalApplication
-    {// asdasd
+    {// Hi there and here
         public BitmapImage ConvertToBitmap(Image img, Size size)
         {
             img = (Image)(new Bitmap(img, size));
