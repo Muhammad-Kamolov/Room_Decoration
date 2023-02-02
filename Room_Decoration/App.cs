@@ -7,7 +7,7 @@ using System.Reflection;
 using System.Windows.Media.Imaging;
 using Metal_Rolling;
 #endregion
-
+dasd
 namespace Room_Decoration
 {
     internal class App : IExternalApplication
@@ -30,8 +30,8 @@ namespace Room_Decoration
 
         public Result OnStartup(UIControlledApplication Application)
         {
-            string tabName = "Третий Трест_Плагины";
-            string panelName = "Плагин";
+            string tabName = "Г’Г°ГҐГІГЁГ© Г’Г°ГҐГ±ГІ_ГЏГ«Г ГЈГЁГ­Г»";
+            string panelName = "ГЏГ«Г ГЈГЁГ­";
 
             // creating the bitImages
             Image RoomDecorImg = Properties.Resources.icon_remonts;
@@ -43,8 +43,8 @@ namespace Room_Decoration
             RibbonPanel materials = Application.CreateRibbonPanel(tabName, panelName);
 
             // creating the buttons 
-            PushButtonData button1 = new PushButtonData("Room_Decoration", "Отделка Помещений", Assembly.GetExecutingAssembly().Location, typeof(Room_Decoration).FullName);
-            button1.ToolTip = "Отделка Помещений";
+            PushButtonData button1 = new PushButtonData("Room_Decoration", "ГЋГІГ¤ГҐГ«ГЄГ  ГЏГ®Г¬ГҐГ№ГҐГ­ГЁГ©", Assembly.GetExecutingAssembly().Location, typeof(Room_Decoration).FullName);
+            button1.ToolTip = "ГЋГІГ¤ГҐГ«ГЄГ  ГЏГ®Г¬ГҐГ№ГҐГ­ГЁГ©";
             PushButton btn1 = materials.AddItem(button1) as PushButton;
 
             // setting image to button
@@ -57,8 +57,8 @@ namespace Room_Decoration
             Image MaterialsImg = Properties.Resources.metalRolling;
 
             // creating the buttons 
-            PushButtonData button2 = new PushButtonData("Metell_Rolling", "Металлопрокат", Assembly.GetExecutingAssembly().Location, typeof(Metal_Rolling_Command).FullName);
-            button1.ToolTip = "Металлопрокат";
+            PushButtonData button2 = new PushButtonData("Metell_Rolling", "ГЊГҐГІГ Г«Г«Г®ГЇГ°Г®ГЄГ ГІ", Assembly.GetExecutingAssembly().Location, typeof(Metal_Rolling_Command).FullName);
+            button1.ToolTip = "ГЊГҐГІГ Г«Г«Г®ГЇГ°Г®ГЄГ ГІ";
             PushButton btn2 = materials.AddItem(button2) as PushButton;
 
             // setting image to button
