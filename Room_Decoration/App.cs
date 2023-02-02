@@ -30,8 +30,8 @@ namespace Room_Decoration
 
         public Result OnStartup(UIControlledApplication Application)
         {
-            string tabName = "Òðåòèé Òðåñò_Ïëàãèíû";
-            string panelName = "Ïëàãèí";
+            string tabName = "Третий Трест_Плагины";
+            string panelName = "Плагин";
 
             // creating the bitImages
             Image RoomDecorImg = Properties.Resources.icon_remonts;
@@ -43,8 +43,8 @@ namespace Room_Decoration
             RibbonPanel materials = Application.CreateRibbonPanel(tabName, panelName);
 
             // creating the buttons 
-            PushButtonData button1 = new PushButtonData("Room_Decoration", "Îòäåëêà Ïîìåùåíèé", Assembly.GetExecutingAssembly().Location, typeof(Room_Decoration).FullName);
-            button1.ToolTip = "Îòäåëêà Ïîìåùåíèé";
+            PushButtonData button1 = new PushButtonData("Room_Decoration", "Отделка Помещений", Assembly.GetExecutingAssembly().Location, typeof(Room_Decoration).FullName);
+            button1.ToolTip = "Отделка Помещений";
             PushButton btn1 = materials.AddItem(button1) as PushButton;
 
             // setting image to button
@@ -57,8 +57,8 @@ namespace Room_Decoration
             Image MaterialsImg = Properties.Resources.metalRolling;
 
             // creating the buttons 
-            PushButtonData button2 = new PushButtonData("Metell_Rolling", "Ìåòàëëîïðîêàò", Assembly.GetExecutingAssembly().Location, typeof(Metal_Rolling_Command).FullName);
-            button1.ToolTip = "Ìåòàëëîïðîêàò";
+            PushButtonData button2 = new PushButtonData("Metell_Rolling", "Металлопрокат", Assembly.GetExecutingAssembly().Location, typeof(Metal_Rolling_Command).FullName);
+            button1.ToolTip = "Металлопрокат";
             PushButton btn2 = materials.AddItem(button2) as PushButton;
 
             // setting image to button
