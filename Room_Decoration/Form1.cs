@@ -13,33 +13,33 @@ namespace Room_Decoration
     public partial class Form1 : Form
     {
         /*                               Начать с
-                                       1 - задачи   
+                                       4 - задачи   
 
       -                                   Задачи
           * 1. Скорректировать Высоту Отделки  -> Выполнена
-          * 2. Фиксить поблему с Отсоединением стен во время генерации отделки в стенах с дверьми и другие Caution месседжи - пока Отложена
-          * 3. Фиксить Баг со вложенным листом listOfListRooms - Выполнена
-          * 4. Генерировать различные Отделки (типов стены) для разных комнат в соответсвие с паметром отделки комнат
+          * 2. Фиксить поблему с Отсоединением стен во время генерации отделки в стенах с дверьми, с дверными проемами и другие Caution месседжи - пока Отложена
+          * 3. Фиксить Баг со вложенным листом listOfListRooms - Выполнена (Использовал обычный список и сортировал комнат по параметром отделки)
+          * 4. -- Генерировать различные Отделки (типов стены) для разных комнат в соответсвие с паметром отделки комнат - ждем пока ТЗ для продолжение
           * 5. Улучшить обработку ошибок пользователя
 
         */
 
-        /*                Добавленные фичи и изменение
-           *                           21.10
+        /*                Ранее добавленные фичи и изменение
+           *                          
              - Предусмотрено несколько вариантов возникновение ошибок пользователя
                 Защита от лишных пробелов 
              - Добавлено автозаполнение для поле "Значений" 
              - Включена Уровень в селектор
            *
-                                       24.10
+                                       
              - Исправлена пара багов
              - Добавлена новая фича "Содержить" (в Условиях)
 
-           *                           31.10
+           *                          
              - Добавлено вложенный список для группирование комнат по параметрам отделки стены
                 Есть баг - во вложенный список попадает лишный элемент, потом исправить
 
-          *                             1.11
+          *                             
              - Исправлен баг - со вложенными списками
           */
 
@@ -55,7 +55,7 @@ namespace Room_Decoration
         public ExternalEvent ExEvent;
 
 
-        List<List<Room>> listOfListRooms = new List<List<Room>>(); // Вложенный - материнский  список
+        //List<List<Room>> listOfListRooms = new List<List<Room>>(); // Вложенный - материнский  список
         List<Room> listOfRooms = new List<Room>(); // Список для хранение и отображения результатов
         #endregion
 
@@ -71,7 +71,6 @@ namespace Room_Decoration
 
             myExternalClass = new ExternalEventClass(commandData, listOfRooms);
             ExEvent = ExternalEvent.Create(myExternalClass);
-
         }
 
         ////
@@ -90,7 +89,7 @@ namespace Room_Decoration
             comboParameters.Sorted = true;
             //comboParameters.SelectedIndex = 0; // По умолчанию отображается первый элемент (0) из списка в поле ввода 
             comboParameters.DropDownStyle = ComboBoxStyle.DropDownList; // Отключаю ввод пользователя (он только может выбрать)            
-            comboLevel.DropDownStyle = ComboBoxStyle.DropDownList; // Верхнаое действие для списка уровней           
+            comboLevel.DropDownStyle = ComboBoxStyle.DropDownList;
             comboValue.AutoCompleteMode = AutoCompleteMode.SuggestAppend; // Автозаполнение для поле значений          
             comboValue.AutoCompleteSource = AutoCompleteSource.ListItems; // Автозаполнение для поле значений          
             // Заполняю список условий
@@ -198,7 +197,6 @@ namespace Room_Decoration
             // Получаю имена всех комнат по заданным параметрам
             FilteredElementCollector rooms = new FilteredElementCollector(doc).OfCategory(BuiltInCategory.OST_Rooms).WhereElementIsNotElementType();
             List<string> listRoomsSelectedName = new List<string>(); // Список для хранение и отображения результатов
-            //List<Room> listRoomsSelectedEl = new List<Room>(); // Список для хранение и отображения результатов
             int comboValueCheck = 0; // Определитель (для проверок) 
             foreach (Room room in rooms)
             {
@@ -251,7 +249,9 @@ namespace Room_Decoration
                     }
                 }
             }
-            // Вывод Основного результата 
+
+            //// Обработка ошибок пользователя
+
             // Проверка если есть ручной ввод, или выбора варианта
             if (comboValueCheck != 3)
             {
@@ -291,30 +291,30 @@ namespace Room_Decoration
                 {
                     MessageBox.Show("Не найдено элементов", "Внимание!");
                 }
-                else
-                {
-                    listRoomsSelectedName.Add(listRoomsSelectedName.Count.ToString());
-                    MessageBox.Show(String.Join("\n ", listRoomsSelectedName), "Результаты селектора"); // Вывод результатов (равно/не равно)
-                }
+                //else
+                //{
+                //    listRoomsSelectedName.Add(listRoomsSelectedName.Count.ToString());
+                //    //MessageBox.Show(String.Join("\n ", listRoomsSelectedName), "Результаты селектора"); // Вывод результатов (равно/не равно)
+                //}
             }
-            else
-            {
-                listRoomsSelectedName.Add(listRoomsSelectedName.Count.ToString());
-                MessageBox.Show(String.Join("\n ", listRoomsSelectedName), "Результаты селектора"); // Вывод результатов (содержит)
-            }
+            //else
+            //{
+            //    listRoomsSelectedName.Add(listRoomsSelectedName.Count.ToString());
+            //    //MessageBox.Show(String.Join("\n ", listRoomsSelectedName), "Результаты селектора"); // Вывод результатов (содержит)
+            //}
 
-            MessageBox.Show(String.Join("\n ", listDecorType), "Типы отделок"); // Вывод типов отделок (их наименование), listDecorType - список с наименованием типов отделок
+            listOfRooms = listOfRooms.OrderBy(r => r.LookupParameter("Отделка стен").AsValueString()).ToList(); // Сортировка выбранных комнат по параметру "Отделка Стен", этот список будет передано для транзакции
+            //MessageBox.Show(String.Join("\n ", listDecorType), "Типы отделок"); // Вывод типов отделок (их наименование), listDecorType - список с наименованием типов отделок
 
             ////
             // Отсечение по типу отделки
             ////
 
-            listOfRooms = listOfRooms.OrderBy(r => r.LookupParameter("Отделка стен").AsValueString()).ToList(); // Сортировка выбранных комнат по параметру "Отделка Стен", этот список будет передано для транзакции
 
-            List<string> listOfNameAndDecoration = listOfRooms.Select(r => r.Name + " - " + r.LookupParameter("Отделка стен").AsValueString()).ToList();
-            MessageBox.Show(String.Join("\n ", listOfNameAndDecoration), "listOfNameAndDecoration of listRoomsSelectedEl");
+            //List<string> listOfNameAndDecoration = listOfRooms.Select(r => r.Name + " - " + r.LookupParameter("Отделка стен").AsValueString()).ToList();
+            //MessageBox.Show(String.Join("\n ", listOfNameAndDecoration), "listOfNameAndDecoration of listRoomsSelectedEl");
 
-            #region
+            #region Обработка Вложенного списка
             //List<List<string>> listOfList = new List<List<string>>(); // Вложенный - материнский  список
 
             //if (listRoomsSelectedEl.Count != 0)
@@ -447,7 +447,7 @@ namespace Room_Decoration
     ////
     ////
 
-    public class ExternalEventClass : IExternalEventHandler
+    public class ExternalEventClass : IExternalEventHandler   // Реализую интерфейс обработчика внешнего события
     {
         UIDocument uidoc;
         Document doc;
@@ -502,7 +502,6 @@ namespace Room_Decoration
                 opt.SpatialElementBoundaryLocation = SpatialElementBoundaryLocation.Finish;
                 double DecorWallHeight = 0;
 
-                // Здесь будут Case(ы) для разных отделок
                 foreach (Room room in listOfRooms_Got)
                 {
                     List<BoundarySegment> boundarySegments_list_Final = new List<BoundarySegment>();
@@ -519,6 +518,34 @@ namespace Room_Decoration
                         }
                     }
 
+
+                    //// Выбор разных отделок
+                    //WallType wallType;
+                    //ElementId wallType_Id = null;
+                    //double wallType_width = 0;
+
+                    //switch (room.LookupParameter("Отделка стен").AsValueString())
+                    //{
+                    //    case "Штукатурка на гипсовой основе 18мм":
+
+                    //        wallType = new FilteredElementCollector(doc).OfCategory(BuiltInCategory.OST_Walls).WhereElementIsElementType().
+                    //           Where(w => w.Name.Equals("ADSK_Отделка_на_Гипосовой_основе_30")).FirstOrDefault() as WallType;
+                    //        wallType_Id = wallType.Id;
+                    //        wallType_width = wallType.Width;
+
+                    //        break;
+                    //    case "Штукатурка на сухой ПЦС 18мм":
+
+                    //        wallType = new FilteredElementCollector(doc).OfCategory(BuiltInCategory.OST_Walls).WhereElementIsElementType().
+                    //          Where(w => w.Name.Equals("ADSK_Отделка_на_Сухой_ПЦС_10")).FirstOrDefault() as WallType;
+                    //        wallType_Id = wallType.Id;
+                    //        wallType_width = wallType.Width;
+
+                    //        break;
+                    //}
+                    ////
+                    
+                    
                     // Создание Отделки для стен
                     using (Transaction tx = new Transaction(doc, "Test"))
                     {
@@ -534,7 +561,7 @@ namespace Room_Decoration
                                 ElementId levelId = wall.LevelId;
                                 DecorWallHeight = mmToFeet(Convert.ToDouble(wall.LookupParameter("Неприсоединенная высота").AsValueString()));
 
-                                Wall.Create(doc,
+                                Wall mainWall = Wall.Create(doc,
                                    curve_offset,
                                    wallType_Id,
                                    levelId,
@@ -542,7 +569,6 @@ namespace Room_Decoration
                                    0,
                                    false,
                                    false);
-
 
                                 // Проверка торцов (Создаю отделку для торцевых частей)
                                 Wall myWall;
@@ -576,7 +602,7 @@ namespace Room_Decoration
                                            curve_2_offset,
                                            wallType_Id,
                                            levelId,
-                                           DecorWallHeight, // < 7 работает но больше не будет стенька
+                                           DecorWallHeight,
                                            0,
                                            false,
                                            false);
@@ -672,7 +698,7 @@ namespace Room_Decoration
                                         WallUtils.DisallowWallJoinAtEnd(myWall, 1);
 
 
-                                        // Соединяю торцовую отделку
+                                        // Соединяю торцовую отделку (Все это для того чтобы отделка генерировалась нормально у торцов)
                                         WallConnecting(firstWall, secondWall, myWall);
                                     }
                                 }
@@ -722,5 +748,4 @@ namespace Room_Decoration
             }
         }
     }
-
 }

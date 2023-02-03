@@ -22,3 +22,15 @@ D:\GitHub\Новая папка\Room_Decoration\obj\Debug\Room_Decoration.csproj
 D:\GitHub\Новая папка\Room_Decoration\obj\Debug\Room_Decoration.csproj.CopyComplete
 D:\GitHub\Новая папка\Room_Decoration\obj\Debug\Room_Decoration.dll
 D:\GitHub\Новая папка\Room_Decoration\obj\Debug\Room_Decoration.pdb
+D:\GitHub\Room_Decoration\Room_Decoration\bin\Debug\Room_Decoration.dll
+D:\GitHub\Room_Decoration\Room_Decoration\bin\Debug\Room_Decoration.pdb
+D:\GitHub\Room_Decoration\Room_Decoration\bin\Debug\MoreLinq.Portable.dll
+D:\GitHub\Room_Decoration\Room_Decoration\bin\Debug\MoreLinq.Portable.xml
+D:\GitHub\Room_Decoration\Room_Decoration\obj\Debug\Room_Decoration.csproj.AssemblyReference.cache
+D:\GitHub\Room_Decoration\Room_Decoration\obj\Debug\Room_Decoration.Form1.resources
+D:\GitHub\Room_Decoration\Room_Decoration\obj\Debug\Room_Decoration.Properties.Resources.resources
+D:\GitHub\Room_Decoration\Room_Decoration\obj\Debug\Room_Decoration.csproj.GenerateResource.cache
+D:\GitHub\Room_Decoration\Room_Decoration\obj\Debug\Room_Decoration.csproj.CoreCompileInputs.cache
+D:\GitHub\Room_Decoration\Room_Decoration\obj\Debug\Room_Decoration.csproj.CopyComplete
+D:\GitHub\Room_Decoration\Room_Decoration\obj\Debug\Room_Decoration.dll
+D:\GitHub\Room_Decoration\Room_Decoration\obj\Debug\Room_Decoration.pdb
