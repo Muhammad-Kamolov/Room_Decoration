@@ -16,7 +16,7 @@ namespace Room_Decoration
                                        3 - задачи   
 
       -                                   Задачи
-          * 1. Скорректировать Высоту Отделки  -> Выполнена
+          * 1. Скорректировать Высоту Отделки  -> Выполнена 
           * 2. Фиксить Баг со вложенным листом listOfListRooms - Выполнена (Использовал обычный список и сортировал комнат по параметром отделки)
           * -- 3. Фиксить поблему с Отсоединением стен во время генерации отделки в стенах с дверьми, с дверными проемами и другие Caution месседжи - 
           * 4. Генерировать различные Отделки (типов стены) для разных комнат в соответсвие с паметром отделки комнат - ждем пока ТЗ для продолжение
@@ -544,18 +544,36 @@ namespace Room_Decoration
                     //        break;
                     //}
                     ////
-                    
-                    
+
+
                     // Создание Отделки для стен
                     using (Transaction tx = new Transaction(doc, "Test"))
                     {
                         tx.Start("Transaction Start");
+                        /* НАЧАТЬ ОТСЮДА! 07.02
+                                Проверка (i=j после вервой итерацией) |||| и проблема с последней итерацией на строке 565
+                         */
+                        int check = 0;
                         for (int i = 0; i < boundarySegments_list_Final.Count; i++)
                         {
                             if (doc.GetElement(boundarySegments_list_Final[i].ElementId).Category.Name == "Стены")
                             {
                                 // Создаю Отделку для основных стен
-                                Curve curve = boundarySegments_list_Final[i].GetCurve();
+                                Curve curve = null;
+                                
+                                
+                                    for (int j = i + 1; j < boundarySegments_list_Final.Count - 1; j++)
+                                    {
+                                        if (boundarySegments_list_Final[i].GetCurve().GetEndPoint(0).X != boundarySegments_list_Final[j].GetCurve().GetEndPoint(0).X &&
+                                            boundarySegments_list_Final[i].GetCurve().GetEndPoint(0).Y != boundarySegments_list_Final[j].GetCurve().GetEndPoint(0).Y)
+                                        {
+                                            curve = Line.CreateBound(boundarySegments_list_Final[i].GetCurve().GetEndPoint(0),
+                                                boundarySegments_list_Final[j - 1].GetCurve().GetEndPoint(1));
+                                            check = j;
+                                        }
+                                    }
+                                
+                                //Curve curve = boundarySegments_list_Final[i].GetCurve();
                                 Curve curve_offset = curve.CreateOffset(wallType_width * (-1) / 2, new XYZ(0, 0, 1));
                                 Wall wall = doc.GetElement(boundarySegments_list_Final[i].ElementId) as Wall;
                                 ElementId levelId = wall.LevelId;
