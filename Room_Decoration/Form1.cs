@@ -551,28 +551,31 @@ namespace Room_Decoration
                     {
                         tx.Start("Transaction Start");
                         /* НАЧАТЬ ОТСЮДА! 07.02
-                                Проверка (i=j после вервой итерацией) |||| и проблема с последней итерацией на строке 565
+                                Проверка (i = j после вервой итерацией) |||| и проблема с последней итерацией на строке 565
                          */
                         int check = 0;
                         for (int i = 0; i < boundarySegments_list_Final.Count; i++)
                         {
+                            i = check;
                             if (doc.GetElement(boundarySegments_list_Final[i].ElementId).Category.Name == "Стены")
                             {
                                 // Создаю Отделку для основных стен
                                 Curve curve = null;
-                                
-                                
-                                    for (int j = i + 1; j < boundarySegments_list_Final.Count - 1; j++)
+
+                                if (i != boundarySegments_list_Final.Count - 1)
+                                {
+                                    for (int j = i + 1; j < boundarySegments_list_Final.Count; j++)
                                     {
-                                        if (boundarySegments_list_Final[i].GetCurve().GetEndPoint(0).X != boundarySegments_list_Final[j].GetCurve().GetEndPoint(0).X &&
-                                            boundarySegments_list_Final[i].GetCurve().GetEndPoint(0).Y != boundarySegments_list_Final[j].GetCurve().GetEndPoint(0).Y)
+                                        if (boundarySegments_list_Final[i].GetCurve().GetEndPoint(0).X != boundarySegments_list_Final[j].GetCurve().GetEndPoint(1).X &&
+                                            boundarySegments_list_Final[i].GetCurve().GetEndPoint(0).Y != boundarySegments_list_Final[j].GetCurve().GetEndPoint(1).Y)
                                         {
                                             curve = Line.CreateBound(boundarySegments_list_Final[i].GetCurve().GetEndPoint(0),
                                                 boundarySegments_list_Final[j - 1].GetCurve().GetEndPoint(1));
                                             check = j;
                                         }
                                     }
-                                
+                                }
+
                                 //Curve curve = boundarySegments_list_Final[i].GetCurve();
                                 Curve curve_offset = curve.CreateOffset(wallType_width * (-1) / 2, new XYZ(0, 0, 1));
                                 Wall wall = doc.GetElement(boundarySegments_list_Final[i].ElementId) as Wall;
