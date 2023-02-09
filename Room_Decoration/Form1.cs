@@ -304,7 +304,7 @@ namespace Room_Decoration
             //}
 
             listOfRooms = listOfRooms.OrderBy(r => r.LookupParameter("Отделка стен").AsValueString()).ToList(); // Сортировка выбранных комнат по параметру "Отделка Стен", этот список будет передано для транзакции
-            //MessageBox.Show(String.Join("\n ", listDecorType), "Типы отделок"); // Вывод типов отделок (их наименование), listDecorType - список с наименованием типов отделок
+                                                                                                                //MessageBox.Show(String.Join("\n ", listDecorType), "Типы отделок"); // Вывод типов отделок (их наименование), listDecorType - список с наименованием типов отделок
 
             ////
             // Отсечение по типу отделки
@@ -550,31 +550,32 @@ namespace Room_Decoration
                     using (Transaction tx = new Transaction(doc, "Test"))
                     {
                         tx.Start("Transaction Start");
-                        /* НАЧАТЬ ОТСЮДА! 07.02
-                                Проверка (i = j после вервой итерацией) |||| и проблема с последней итерацией на строке 565
-                         */
                         int check = 0;
                         for (int i = 0; i < boundarySegments_list_Final.Count; i++)
                         {
-                            i = check;
+                            //if (i == check)
+                            //{
+
+                            //}
+                            bool bool_check = false;
                             if (doc.GetElement(boundarySegments_list_Final[i].ElementId).Category.Name == "Стены")
                             {
                                 // Создаю Отделку для основных стен
-                                Curve curve = null;
-
-                                if (i != boundarySegments_list_Final.Count - 1)
+                                Curve curve = boundarySegments_list_Final[i].GetCurve();
+                                //
+                                for (int j = i + 1; j < boundarySegments_list_Final.Count; j++)
                                 {
-                                    for (int j = i + 1; j < boundarySegments_list_Final.Count; j++)
+                                    if ((boundarySegments_list_Final[i].GetCurve() as Line).Direction.Y == (boundarySegments_list_Final[j].GetCurve() as Line).Direction.Y ||
+                                        (boundarySegments_list_Final[i].GetCurve() as Line).Direction.X == (boundarySegments_list_Final[j].GetCurve() as Line).Direction.X)
                                     {
-                                        if (boundarySegments_list_Final[i].GetCurve().GetEndPoint(0).X != boundarySegments_list_Final[j].GetCurve().GetEndPoint(1).X &&
-                                            boundarySegments_list_Final[i].GetCurve().GetEndPoint(0).Y != boundarySegments_list_Final[j].GetCurve().GetEndPoint(1).Y)
-                                        {
-                                            curve = Line.CreateBound(boundarySegments_list_Final[i].GetCurve().GetEndPoint(0),
-                                                boundarySegments_list_Final[j - 1].GetCurve().GetEndPoint(1));
-                                            check = j;
-                                        }
+                                        curve = Line.CreateBound(boundarySegments_list_Final[i].GetCurve().GetEndPoint(0),
+                                            boundarySegments_list_Final[j].GetCurve().GetEndPoint(1));
+                                        check = j;
+                                        bool_check = true;
                                     }
+                                    else break;
                                 }
+                                //
 
                                 //Curve curve = boundarySegments_list_Final[i].GetCurve();
                                 Curve curve_offset = curve.CreateOffset(wallType_width * (-1) / 2, new XYZ(0, 0, 1));
@@ -725,6 +726,10 @@ namespace Room_Decoration
                                 }
                             Found:
                                 int uselessNumber = 0;
+                            }
+                            if (bool_check) // Для предотвращение повторного построение отделки в одном месте
+                            {
+                                i = check;
                             }
                         }
                         tx.Commit();

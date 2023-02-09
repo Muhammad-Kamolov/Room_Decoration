@@ -17,13 +17,13 @@ namespace Room_Decoration
             UIDocument uidoc = uiapp.ActiveUIDocument;
             Document doc = uidoc.Document;
             Form1 frm = new Form1(commandData);
-            //frm.ShowDialog();
-            // TaskDialog.Show("t","Room_Decoration.cs is Working");
+            frm.Show();
+            //TaskDialog.Show("t","Room_Decoration.cs is Working");
             
             
-            Reference refer = uidoc.Selection.PickObject(ObjectType.Element);
-            Wall mainWall = doc.GetElement(refer) as Wall;
-            TaskDialog.Show("t", mainWall.GetMaterialIds(false).FirstOrDefault().ToString()  + "  -  " + mainWall.GetMaterialIds(false).Count.ToString());
+            //Reference refer = uidoc.Selection.PickObject(ObjectType.Element);
+            //Wall mainWall = doc.GetElement(refer) as Wall;
+            //TaskDialog.Show("t", mainWall.GetMaterialIds(false).FirstOrDefault().ToString()  + "  -  " + mainWall.GetMaterialIds(false).Count.ToString());
 
             return Result.Succeeded;
         }        
